@@ -1,5 +1,5 @@
 # pytorch-generative-model-collections
-[[Tensorflow version]](https://github.com/hwalsuklee/tensorflow-generative-model-collections)
+Original : [[Tensorflow version]](https://github.com/hwalsuklee/tensorflow-generative-model-collections)
 
 Pytorch implementation of various GANs.
 
@@ -8,6 +8,7 @@ This repository was re-implemented with reference to [tensorflow-generative-mode
 I tried to implement this repository as much as possible with [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections).
 
 ## Difference from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections)
+- This repository does not have WAGN-GP and Variational Auto-Encoders.
 - DRAGAN : The DRAGAN loss calculation method is different.
 - ACGAN : The learning procedure is different.
 - WGAN : The training of the discriminator is repeats 5 times in one iteration.
