@@ -66,7 +66,7 @@ ACGAN | <img src = 'assets/mnist_results/ACGAN_epoch001.png' height = '200px'> |
 infoGAN | <img src = 'assets/mnist_results/infoGAN_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/infoGAN_epoch010.png' height = '200px'> | <img src = 'assets/mnist_results/infoGAN_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/infoGAN_generate_animation.gif' height = '200px'>
 
 #### InfoGAN : Manipulating two continous codes
-All results have the same noise vector and label condition.
+All results have the same noise vector and label condition, but have different continous vector.
 
 *Name* | *Epoch 1* | *Epoch 10* | *Epoch 25* | *GIF*
 :---: | :---: | :---: | :---: | :---: |
@@ -121,7 +121,7 @@ ACGAN tends to fall into mode-collapse in [tensorflow-generative-model-collectio
 infoGAN tends to ignore noise-vector. It results in that various style within the same class can not be represented.
 
 #### InfoGAN : Manipulating two continous codes
-All results have the same noise vector and label condition.
+All results have the same noise vector and label condition, but have different continous vector.
 
 *Name* | *Epoch 1* | *Epoch 10* | *Epoch 25* | *GIF*
 :---: | :---: | :---: | :---: | :---: |
@@ -141,8 +141,28 @@ CGAN | <img src = 'assets/fashion_mnist_results/CGAN_loss.png' height = '230px'>
 ACGAN | <img src = 'assets/fashion_mnist_results/ACGAN_loss.png' height = '230px'>
 infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_loss.png' height = '230px'>
 
-## Development Environment
+## Folder structure
+The following shows basic folder structure.
+```
+├── main.py # gateway
+├── data
+│   ├── mnist # mnist data (not included in this repo)
+│   |   ├── t10k-images-idx3-ubyte.gz
+│   |   ├── t10k-labels-idx1-ubyte.gz
+│   |   ├── train-images-idx3-ubyte.gz
+│   |   └── train-labels-idx1-ubyte.gz
+│   └── fashion-mnist # fashion-mnist data (not included in this repo)
+│       ├── t10k-images-idx3-ubyte.gz
+│       ├── t10k-labels-idx1-ubyte.gz
+│       ├── train-images-idx3-ubyte.gz
+│       └── train-labels-idx1-ubyte.gz
+├── GAN.py # vainilla GAN
+├── utils.py # utils
+├── models # model files to be saved here
+└── results # generation results to be saved here
+```
 
+## Development Environment
 * Ubuntu 14.04 LTS
 * NVIDIA GTX 1080 ti
 * cuda 8.0
