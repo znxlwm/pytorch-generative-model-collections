@@ -11,6 +11,7 @@ This repository is included code for CPU mode Pytorch, but i did not test. I tes
 
 ## Difference from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections)
 - This repository does not have WGAN-GP and Variational Auto-Encoders.
+- All models use only 25 training epochs.
 - DRAGAN : The DRAGAN loss calculation method is different.
 - ACGAN : The learning procedure is different.
 - WGAN : The training of the discriminator is repeats 5 times in one iteration.
