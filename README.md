@@ -73,15 +73,15 @@ infoGAN | <img src = 'assets/mnist_results/infoGAN_cont_epoch001.png' height = '
 
 *Name* | *Loss*
 :---: | :---: |
-GAN | <img src = 'assets/mnist_results/GAN_loss.png'>
-LSGAN | <img src = 'assets/mnist_results/LSGAN_loss.png'>
-WGAN | <img src = 'assets/mnist_results/WGAN_loss.png>
-DRAGAN | <img src = 'assets/mnist_results/DRAGAN_loss.png'>
-EBGAN | <img src = 'assets/mnist_results/EBGAN_loss.png'>
-BEGAN | <img src = 'assets/mnist_results/BEGAN_loss.png'>
-CGAN | <img src = 'assets/mnist_results/CGAN_loss.png'>
-ACGAN | <img src = 'assets/mnist_results/ACGAN_loss.png'>
-infoGAN | <img src = 'assets/mnist_results/infoGAN_loss.png'>
+GAN | <img src = 'assets/mnist_results/GAN_loss.png' height = '230px'>
+LSGAN | <img src = 'assets/mnist_results/LSGAN_loss.png' height = '230px'>
+WGAN | <img src = 'assets/mnist_results/WGAN_loss.png' height = '230px'>
+DRAGAN | <img src = 'assets/mnist_results/DRAGAN_loss.png' height = '230px'>
+EBGAN | <img src = 'assets/mnist_results/EBGAN_loss.png' height = '230px'>
+BEGAN | <img src = 'assets/mnist_results/BEGAN_loss.png' height = '230px'>
+CGAN | <img src = 'assets/mnist_results/CGAN_loss.png' height = '230px'>
+ACGAN | <img src = 'assets/mnist_results/ACGAN_loss.png' height = '230px'>
+infoGAN | <img src = 'assets/mnist_results/infoGAN_loss.png' height = '230px'>
 
 ### Results for fashion-mnist
 Comments on network architecture in mnist are also applied to here.  
@@ -128,12 +128,12 @@ infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_cont_epoch001.png' he
 
 *Name* | *Loss*
 :---: | :---: |
-GAN | <img src = 'assets/fashion_mnist_results/GAN_loss.png'>
-LSGAN | <img src = 'assets/fashion_mnist_results/LSGAN_loss.png'>
-WGAN | <img src = 'assets/fashion_mnist_results/WGAN_loss.png'>
-DRAGAN | <img src = 'assets/fashion_mnist_results/DRAGAN_loss.png'>
-EBGAN | <img src = 'assets/fashion_mnist_results/EBGAN_loss.png'>
-BEGAN | <img src = 'assets/fashion_mnist_results/BEGAN_loss.png>
-CGAN | <img src = 'assets/fashion_mnist_results/CGAN_loss.png'>
-ACGAN | <img src = 'assets/fashion_mnist_results/ACGAN_loss.png'>
-infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_loss.png'>
+GAN | <img src = 'assets/fashion_mnist_results/GAN_loss.png' height = '230px'>
+LSGAN | <img src = 'assets/fashion_mnist_results/LSGAN_loss.png' height = '230px'>
+WGAN | <img src = 'assets/fashion_mnist_results/WGAN_loss.png' height = '230px'>
+DRAGAN | <img src = 'assets/fashion_mnist_results/DRAGAN_loss.png' height = '230px'>
+EBGAN | <img src = 'assets/fashion_mnist_results/EBGAN_loss.png' height = '230px'>
+BEGAN | <img src = 'assets/fashion_mnist_results/BEGAN_loss.png' height = '230px'>
+CGAN | <img src = 'assets/fashion_mnist_results/CGAN_loss.png' height = '230px'>
+ACGAN | <img src = 'assets/fashion_mnist_results/ACGAN_loss.png' height = '230px'>
+infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_loss.png' height = '230px'>
