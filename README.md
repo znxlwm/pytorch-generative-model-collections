@@ -49,7 +49,7 @@ All results are generated from the fixed noise vector.
 
 *Name* | *Epoch 1* | *Epoch 10* | *Epoch 25* | *GIF*
 :---: | :---: | :---: | :---: | :---: |
-GAN | <img src = 'assets/mnist_results/GAN_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/GAN_epoch010.png'> | <img src = 'assets/mnist_results/GAN_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/GAN_generate_animation.gif' height = '200px'>
+GAN | <img src = 'assets/mnist_results/GAN_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/GAN_epoch010.png' height = '200px'> | <img src = 'assets/mnist_results/GAN_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/GAN_generate_animation.gif' height = '200px'>
 LSGAN | <img src = 'assets/mnist_results/LSGAN_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/LSGAN_epoch010.png' height = '200px'> | <img src = 'assets/mnist_results/LSGAN_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/LSGAN_generate_animation.gif' height = '200px'>
 WGAN | <img src = 'assets/mnist_results/WGAN_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/WGAN_epoch010.png' height = '200px'> | <img src = 'assets/mnist_results/WGAN_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/WGAN_generate_animation.gif' height = '200px'>
 DRAGAN | <img src = 'assets/mnist_results/DRAGAN_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/DRAGAN_epoch010.png' height = '200px'> | <img src = 'assets/mnist_results/DRAGAN_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/DRAGAN_generate_animation.gif' height = '200px'>
