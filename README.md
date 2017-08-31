@@ -116,8 +116,8 @@ CGAN | <img src = 'assets/fashion_mnist_results/CGAN_epoch001.png' height = '200
 ACGAN | <img src = 'assets/fashion_mnist_results/ACGAN_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/ACGAN_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/ACGAN_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/ACGAN_generate_animation.gif' height = '200px'>
 infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/infoGAN_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/infoGAN_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/infoGAN_generate_animation.gif' height = '200px'>
 
-Without hyper-parameter tuning from mnist-version, ACGAN/infoGAN does not work well as compared iwth CGAN.  
-ACGAN tends to fall into mode-collapse.  
+Without hyper-parameter tuning from mnist-version, infoGAN does not work well as compared iwth CGAN/ACGAN.  
+ACGAN tends to fall into mode-collapse in [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections), but Pytorch ACGAN does not fall into mode-collapse.
 infoGAN tends to ignore noise-vector. It results in that various style within the same class can not be represented.
 
 #### InfoGAN : Manipulating two continous codes
