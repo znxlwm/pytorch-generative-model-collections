@@ -7,6 +7,8 @@ This repository was re-implemented with reference to [tensorflow-generative-mode
 
 I tried to implement this repository as much as possible with [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections).
 
+This repository is included for CPU mode Pytorch, but i did not test. I tested only in GPU mode Pytorch.
+
 ## Difference from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections)
 - This repository does not have WAGN-GP and Variational Auto-Encoders.
 - DRAGAN : The DRAGAN loss calculation method is different.
@@ -138,3 +140,19 @@ BEGAN | <img src = 'assets/fashion_mnist_results/BEGAN_loss.png' height = '230px
 CGAN | <img src = 'assets/fashion_mnist_results/CGAN_loss.png' height = '230px'>
 ACGAN | <img src = 'assets/fashion_mnist_results/ACGAN_loss.png' height = '230px'>
 infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_loss.png' height = '230px'>
+
+## Development Environment
+
+* Ubuntu 14.04 LTS
+* NVIDIA GTX 1080 ti
+* cuda 8.0
+* Python 2.7.6
+* pytorch 0.2.0+5585c26
+* numpy 1.13.1
+* matplotlib 1.3.1
+* imageio 2.2.0
+* scipy 0.19.1
+
+## Acknowledgements
+This implementation has been based on [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections) and tested with Pytorch on Ubuntu 14.04 using GPU.
+
