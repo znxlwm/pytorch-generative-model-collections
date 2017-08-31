@@ -5,6 +5,13 @@ Pytorch implementation of various GANs.
 
 This repository was re-implemented with reference to [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections) by [Hwalsuk Lee](https://github.com/hwalsuklee)
 
+## Difference from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections)
+- DRAGAN : The DRAGAN loss calculation method is different.
+- ACGAN : The learning procedure is different.
+- WGAN : The training of the discriminator is repeats 5 times in one iteration.
+- EBGAN : The last layer of discriminator does not use sigmoid activation function.
+- BEGAN : L1 norm is used instead of L2 norm.
+
 ## Generative Adversarial Networks (GANs)
 ### Lists (Table is borrowed from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections))
 
@@ -35,30 +42,44 @@ python main.py --dataset mnist --gan_type <TYPE> --epoch 25 --batch_size 64
 #### Fixed generation
 All results are generated from the fixed noise vector.
 
-*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25*
-:---: | :---: | :---: | :---: |
-GAN | <img src = 'assets/mnist_results/GAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/GAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/GAN_epoch025.png' height = '230px'>
-LSGAN | <img src = 'assets/mnist_results/LSGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/LSGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/LSGAN_epoch025.png' height = '230px'>
-WGAN | <img src = 'assets/mnist_results/WGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/WGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/WGAN_epoch025.png' height = '230px'>
-DRAGAN | <img src = 'assets/mnist_results/DRAGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/DRAGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/DRAGAN_epoch025.png' height = '230px'>
-EBGAN | <img src = 'assets/mnist_results/EBGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/EBGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/EBGAN_epoch025.png' height = '230px'>
-BEGAN | <img src = 'assets/mnist_results/BEGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/BEGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/BEGAN_epoch025.png' height = '230px'>
+*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25* | *GIF*
+:---: | :---: | :---: | :---: | :---: |
+GAN | <img src = 'assets/mnist_results/GAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/GAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/GAN_epoch025.png' height = '230px'> | <img src = 'assets/mnist_results/GAN_generate_animation.gif' height = '230px'>
+LSGAN | <img src = 'assets/mnist_results/LSGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/LSGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/LSGAN_epoch025.png' height = '230px'> | <img src = 'assets/mnist_results/LSGAN_generate_animation.gif' height = '230px'>
+WGAN | <img src = 'assets/mnist_results/WGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/WGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/WGAN_epoch025.png' height = '230px'> | <img src = 'assets/mnist_results/WGAN_generate_animation.gif' height = '230px'>
+DRAGAN | <img src = 'assets/mnist_results/DRAGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/DRAGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/DRAGAN_epoch025.png' height = '230px'> | <img src = 'assets/mnist_results/DRAGAN_generate_animation.gif' height = '230px'>
+EBGAN | <img src = 'assets/mnist_results/EBGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/EBGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/EBGAN_epoch025.png' height = '230px'> | <img src = 'assets/mnist_results/EBGAN_generate_animation.gif' height = '230px'>
+BEGAN | <img src = 'assets/mnist_results/BEGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/BEGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/BEGAN_epoch025.png' height = '230px'> | <img src = 'assets/mnist_results/BEGAN_generate_animation.gif' height = '230px'>
 
 #### Conditional generation
 Each row has the same noise vector and each column has the same label condition.
 
-*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25*
-:---: | :---: | :---: | :---: |
-CGAN | <img src = 'assets/mnist_results/CGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/CGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/CGAN_epoch025.png' height = '230px'>
-ACGAN | <img src = 'assets/mnist_results/ACGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/ACGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/ACGAN_epoch025.png' height = '230px'>
-infoGAN | <img src = 'assets/mnist_results/infoGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/infoGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/infoGAN_epoch025.png' height = '230px'>
+*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25* | *GIF*
+:---: | :---: | :---: | :---: | :---: |
+CGAN | <img src = 'assets/mnist_results/CGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/CGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/CGAN_epoch025.png' height = '230px'> | <img src = 'assets/mnist_results/CGAN_generate_animation.gif' height = '230px'>
+ACGAN | <img src = 'assets/mnist_results/ACGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/ACGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/ACGAN_epoch025.png' height = '230px'> | <img src = 'assets/mnist_results/ACGAN_generate_animation.gif' height = '230px'>
+infoGAN | <img src = 'assets/mnist_results/infoGAN_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/infoGAN_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/infoGAN_epoch025.png' height = '230px'> | <img src = 'assets/mnist_results/infoGAN_generate_animation.gif' height = '230px'>
 
 #### InfoGAN : Manipulating two continous codes
 All results have the same noise vector and label condition.
 
-*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25*
-:---: | :---: | :---: | :---: |
-infoGAN | <img src = 'assets/mnist_results/infoGAN_cont_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/infoGAN_cont_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/infoGAN_cont_epoch025.png' height = '230px'>
+*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25* | *GIF*
+:---: | :---: | :---: | :---: | :---: |
+infoGAN | <img src = 'assets/mnist_results/infoGAN_cont_epoch001.png' height = '230px'> | <img src = 'assets/mnist_results/infoGAN_cont_epoch010.png' height = '230px'> | <img src = 'assets/mnist_results/infoGAN_cont_epoch025.png' height = '230px'> | <img src = 'assets/mnist_results/infoGAN_cont_generate_animation.gif' height = '230px'>
+
+#### Loss plot
+
+*Name* | *Loss*
+:---: | :---: |
+GAN | <img src = 'assets/mnist_results/GAN_loss.png>
+LSGAN | <img src = 'assets/mnist_results/LSGAN_loss.png>
+WGAN | <img src = 'assets/mnist_results/WGAN_loss.png>
+DRAGAN | <img src = 'assets/mnist_results/DRAGAN_loss.png>
+EBGAN | <img src = 'assets/mnist_results/EBGAN_loss.png>
+BEGAN | <img src = 'assets/mnist_results/BEGAN_loss.png>
+CGAN | <img src = 'assets/mnist_results/CGAN_loss.png>
+ACGAN | <img src = 'assets/mnist_results/ACGAN_loss.png>
+infoGAN | <img src = 'assets/mnist_results/infoGAN_loss.png>
 
 ### Results for fashion-mnist
 Comments on network architecture in mnist are also applied to here.  
@@ -72,23 +93,23 @@ python main.py --dataset fashion-mnist --gan_type <TYPE> --epoch 25 --batch_size
 #### Fixed generation
 All results are generated from the fixed noise vector.
 
-*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25*
-:---: | :---: | :---: | :---: |
-GAN | <img src = 'assets/fashion_mnist_results/GAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/GAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/GAN_epoch025.png' height = '230px'>
-LSGAN | <img src = 'assets/fashion_mnist_results/LSGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/LSGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/LSGAN_epoch025.png' height = '230px'>
-WGAN | <img src = 'assets/fashion_mnist_results/WGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/WGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/WGAN_epoch025.png' height = '230px'>
-DRAGAN | <img src = 'assets/fashion_mnist_results/DRAGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/DRAGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/DRAGAN_epoch025.png' height = '230px'>
-EBGAN | <img src = 'assets/fashion_mnist_results/EBGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/EBGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/EBGAN_epoch025.png' height = '230px'>
-BEGAN | <img src = 'assets/fashion_mnist_results/BEGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/BEGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/BEGAN_epoch025.png' height = '230px'>
+*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25* | *GIF*
+:---: | :---: | :---: | :---: | :---: |
+GAN | <img src = 'assets/fashion_mnist_results/GAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/GAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/GAN_epoch025.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/GAN_generate_animation.gif' height = '230px'>
+LSGAN | <img src = 'assets/fashion_mnist_results/LSGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/LSGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/LSGAN_epoch025.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/LSGAN_generate_animation.gif' height = '230px'>
+WGAN | <img src = 'assets/fashion_mnist_results/WGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/WGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/WGAN_epoch025.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/WGAN_generate_animation.gif' height = '230px'>
+DRAGAN | <img src = 'assets/fashion_mnist_results/DRAGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/DRAGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/DRAGAN_epoch025.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/DRAGAN_generate_animation.gif' height = '230px'>
+EBGAN | <img src = 'assets/fashion_mnist_results/EBGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/EBGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/EBGAN_epoch025.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/EBGAN_generate_animation.gif' height = '230px'>
+BEGAN | <img src = 'assets/fashion_mnist_results/BEGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/BEGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/BEGAN_epoch025.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/BEGAN_generate_animation.gif' height = '230px'>
 
 #### Conditional generation
 Each row has the same noise vector and each column has the same label condition.
 
-*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25*
-:---: | :---: | :---: | :---: |
-CGAN | <img src = 'assets/fashion_mnist_results/CGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/CGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/CGAN_epoch025.png' height = '230px'>
-ACGAN | <img src = 'assets/fashion_mnist_results/ACGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/ACGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/ACGAN_epoch025.png' height = '230px'>
-infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/infoGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/infoGAN_epoch025.png' height = '230px'>
+*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25* | *GIF*
+:---: | :---: | :---: | :---: | :---: |
+CGAN | <img src = 'assets/fashion_mnist_results/CGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/CGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/CGAN_epoch025.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/CGAN_generate_animation.gif' height = '230px'>
+ACGAN | <img src = 'assets/fashion_mnist_results/ACGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/ACGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/ACGAN_epoch025.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/ACGAN_generate_animation.gif' height = '230px'>
+infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/infoGAN_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/infoGAN_epoch025.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/infoGAN_generate_animation.gif' height = '230px'>
 
 Without hyper-parameter tuning from mnist-version, ACGAN/infoGAN does not work well as compared iwth CGAN.  
 ACGAN tends to fall into mode-collapse.  
@@ -97,6 +118,20 @@ infoGAN tends to ignore noise-vector. It results in that various style within th
 #### InfoGAN : Manipulating two continous codes
 All results have the same noise vector and label condition.
 
-*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25*
-:---: | :---: | :---: | :---: |
-infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_cont_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/infoGAN_cont_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/infoGAN_cont_epoch025.png' height = '230px'>
+*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25* | *GIF*
+:---: | :---: | :---: | :---: | :---: |
+infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_cont_epoch001.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/infoGAN_cont_epoch010.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/infoGAN_cont_epoch025.png' height = '230px'> | <img src = 'assets/fashion_mnist_results/infoGAN_cont_generate_animation.gif' height = '230px'>
+
+#### Loss plot
+
+*Name* | *Loss*
+:---: | :---: |
+GAN | <img src = 'assets/fashion_mnist_results/GAN_loss.png>
+LSGAN | <img src = 'assets/fashion_mnist_results/LSGAN_loss.png>
+WGAN | <img src = 'assets/fashion_mnist_results/WGAN_loss.png>
+DRAGAN | <img src = 'assets/fashion_mnist_results/DRAGAN_loss.png>
+EBGAN | <img src = 'assets/fashion_mnist_results/EBGAN_loss.png>
+BEGAN | <img src = 'assets/fashion_mnist_results/BEGAN_loss.png>
+CGAN | <img src = 'assets/fashion_mnist_results/CGAN_loss.png>
+ACGAN | <img src = 'assets/fashion_mnist_results/ACGAN_loss.png>
+infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_loss.png>
