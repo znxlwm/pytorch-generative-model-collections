@@ -5,7 +5,7 @@ Pytorch implementation of various GANs.
 
 This repository was re-implemented with reference to [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections) by [Hwalsuk Lee](https://github.com/hwalsuklee)
 
-I tried to implement this repository as much as possible with [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections).
+I tried to implement this repository as much as possible with [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections), But some models are a little different.
 
 This repository is included code for CPU mode Pytorch, but i did not test. I tested only in GPU mode Pytorch.
 
