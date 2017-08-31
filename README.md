@@ -7,7 +7,7 @@ This repository was re-implemented with reference to [tensorflow-generative-mode
 
 I tried to implement this repository as much as possible with [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections).
 
-This repository is included for CPU mode Pytorch, but i did not test. I tested only in GPU mode Pytorch.
+This repository is included code for CPU mode Pytorch, but i did not test. I tested only in GPU mode Pytorch.
 
 ## Difference from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections)
 - This repository does not have WAGN-GP and Variational Auto-Encoders.
