@@ -172,6 +172,7 @@ The following shows basic folder structure.
 * cuda 8.0
 * Python 2.7.6
 * pytorch 0.2.0+5585c26
+* torchvision 0.1.9
 * numpy 1.13.1
 * matplotlib 1.3.1
 * imageio 2.2.0
