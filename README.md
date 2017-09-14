@@ -162,11 +162,17 @@ The following shows basic folder structure.
 │   |   ├── t10k-labels-idx1-ubyte.gz
 │   |   ├── train-images-idx3-ubyte.gz
 │   |   └── train-labels-idx1-ubyte.gz
-│   └── fashion-mnist # fashion-mnist data (not included in this repo)
-│       ├── t10k-images-idx3-ubyte.gz
-│       ├── t10k-labels-idx1-ubyte.gz
-│       ├── train-images-idx3-ubyte.gz
-│       └── train-labels-idx1-ubyte.gz
+│   ├── fashion-mnist # fashion-mnist data (not included in this repo)
+│   |   ├── t10k-images-idx3-ubyte.gz
+│   |   ├── t10k-labels-idx1-ubyte.gz
+│   |   ├── train-images-idx3-ubyte.gz
+│   |   └── train-labels-idx1-ubyte.gz
+│   └── celebA # celebA data (not included in this repo)
+│       └──celebA
+│          ├── 000001.jpg
+│          ├── ...
+│          ├── ...
+│          └── 202599.jpg
 ├── GAN.py # vainilla GAN
 ├── utils.py # utils
 ├── models # model files to be saved here
