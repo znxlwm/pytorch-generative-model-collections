@@ -9,6 +9,10 @@ I tried to implement this repository as much as possible with [tensorflow-genera
 
 This repository is included code for CPU mode Pytorch, but i did not test. I tested only in GPU mode Pytorch.
 
+## Dataset
+- GAN, LSGAN, WGAN, WGAN_GP, DRAGAN, EBGAN, BEGAN used dataset of the torchvision.
+- infoGAN, ACGAN, CGAN used dataset downloaded from MNIST (http://yann.lecun.com/exdb/mnist/) and fashion-MNIST (https://github.com/zalandoresearch/fashion-mnist).
+
 ## Difference from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections)
 - This repository does not have WGAN-GP and Variational Auto-Encoders.
 - DRAGAN : The DRAGAN loss calculation method is different.
