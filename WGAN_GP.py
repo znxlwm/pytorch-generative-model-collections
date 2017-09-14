@@ -2,7 +2,7 @@ import utils, torch, time, os, pickle
 import numpy as np
 import torch.nn as nn
 import torch.optim as optim
-from torch.autograd import Variable
+from torch.autograd import Variable, grad
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
@@ -47,8 +47,8 @@ class generator(nn.Module):
         return x
 
 class discriminator(nn.Module):
-    # It must be Auto-Encoder style architecture
-    # Architecture : (64)4c2s-FC32-FC64*14*14_BR-(1)4dc2s_S
+    # Network Architecture is exactly same as in infoGAN (https://arxiv.org/abs/1606.03657)
+    # Architecture : (64)4c2s-(128)4c2s_BL-FC1024_BL-FC1_S
     def __init__(self, dataset = 'mnist'):
         super(discriminator, self).__init__()
         if dataset == 'mnist' or dataset == 'fashion-mnist':
@@ -60,36 +60,32 @@ class discriminator(nn.Module):
             self.input_height = 64
             self.input_width = 64
             self.input_dim = 3
-            self.output_dim = 3
+            self.output_dim = 1
 
         self.conv = nn.Sequential(
             nn.Conv2d(self.input_dim, 64, 4, 2, 1),
-            nn.ReLU(),
+            nn.LeakyReLU(0.2),
+            nn.Conv2d(64, 128, 4, 2, 1),
+            nn.BatchNorm2d(128),
+            nn.LeakyReLU(0.2),
         )
         self.fc = nn.Sequential(
-            nn.Linear(64 * (self.input_height // 2) * (self.input_width // 2), 32),
-            nn.BatchNorm1d(32),
-            nn.ReLU(),
-            nn.Linear(32, 64 * (self.input_height // 2) * (self.input_width // 2)),
-            nn.BatchNorm1d(64 * (self.input_height // 2) * (self.input_width // 2)),
-            nn.ReLU(),
-        )
-        self.deconv = nn.Sequential(
-            nn.ConvTranspose2d(64, self.output_dim, 4, 2, 1),
-            #nn.Sigmoid(),
+            nn.Linear(128 * (self.input_height // 4) * (self.input_width // 4), 1024),
+            nn.BatchNorm1d(1024),
+            nn.LeakyReLU(0.2),
+            nn.Linear(1024, self.output_dim),
+            nn.Sigmoid(),
         )
         utils.initialize_weights(self)
 
     def forward(self, input):
         x = self.conv(input)
-        x = x.view(x.size()[0], -1)
+        x = x.view(-1, 128 * (self.input_height // 4) * (self.input_width // 4))
         x = self.fc(x)
-        x = x.view(-1, 64, (self.input_height // 2), (self.input_width // 2))
-        x = self.deconv(x)
 
         return x
 
-class BEGAN(object):
+class WGAN_GP(object):
     def __init__(self, args):
         # parameters
         self.epoch = args.epoch
@@ -101,11 +97,8 @@ class BEGAN(object):
         self.log_dir = args.log_dir
         self.gpu_mode = args.gpu_mode
         self.model_name = args.gan_type
-
-        # BEGAN parameters
-        self.gamma = 0.75
-        self.lambda_ = 0.001
-        self.k = 0.
+        self.lambda_ = 0.25
+        self.n_critic = 5               # the number of iterations of the critic per generator iteration
 
         # networks init
         self.G = generator(self.dataset)
@@ -116,9 +109,6 @@ class BEGAN(object):
         if self.gpu_mode:
             self.G.cuda()
             self.D.cuda()
-            # self.L1_loss = torch.nn.L1loss().cuda()   # BEGAN does not work well when using L1loss().
-        # else:
-        #     self.L1_loss = torch.nn.L1loss()
 
         print('---------- Networks architecture -------------')
         utils.print_network(self.G)
@@ -181,45 +171,52 @@ class BEGAN(object):
                 self.D_optimizer.zero_grad()
 
                 D_real = self.D(x_)
-                D_real_err = torch.mean(torch.abs(D_real - x_))
+                D_real_loss = -torch.mean(D_real)
 
                 G_ = self.G(z_)
                 D_fake = self.D(G_)
-                D_fake_err = torch.mean(torch.abs(D_fake - G_))
+                D_fake_loss = torch.mean(D_fake)
 
-                D_loss = D_real_err - self.k * D_fake_err
-                self.train_hist['D_loss'].append(D_loss.data[0])
+                # gradient penalty
+                if self.gpu_mode:
+                    alpha = torch.rand(x_.size()).cuda()
+                else:
+                    alpha = torch.rand(x_.size())
+
+                x_hat = Variable(alpha * x_.data + (1 - alpha) * G_.data, requires_grad=True)
+
+                pred_hat = self.D(x_hat)
+                if self.gpu_mode:
+                    gradients = grad(outputs=pred_hat, inputs=x_hat, grad_outputs=torch.ones(pred_hat.size()).cuda(),
+                                 create_graph=True, retain_graph=True, only_inputs=True)[0]
+                else:
+                    gradients = grad(outputs=pred_hat, inputs=x_hat, grad_outputs=torch.ones(pred_hat.size()),
+                                     create_graph=True, retain_graph=True, only_inputs=True)[0]
+
+                gradient_penalty = self.lambda_ * ((gradients.view(gradients.size()[0], -1).norm(2, 1) - 1) ** 2).mean()
+
+                D_loss = D_real_loss + D_fake_loss + gradient_penalty
 
                 D_loss.backward()
                 self.D_optimizer.step()
 
-                # update G network
-                self.G_optimizer.zero_grad()
+                if ((iter+1) % self.n_critic) == 0:
+                    # update G network
+                    self.G_optimizer.zero_grad()
 
-                G_ = self.G(z_)
-                D_fake = self.D(G_)
-                D_fake_err = torch.mean(torch.abs(D_fake - G_))
+                    G_ = self.G(z_)
+                    D_fake = self.D(G_)
+                    G_loss = -torch.mean(D_fake)
+                    self.train_hist['G_loss'].append(G_loss.data[0])
 
-                G_loss = D_fake_err
-                self.train_hist['G_loss'].append(G_loss.data[0])
+                    G_loss.backward()
+                    self.G_optimizer.step()
 
-                G_loss.backward()
-                self.G_optimizer.step()
-
-                # convergence metric
-                temp_M = D_real_err + torch.abs(self.gamma * D_real_err - D_fake_err)
-
-                # operation for updating k
-                temp_k = self.k + self.lambda_ * (self.gamma * D_real_err - D_fake_err)
-                temp_k = temp_k.data[0]
-
-                # self.k = temp_k.data[0]
-                self.k = min(max(temp_k, 0), 1)
-                self.M = temp_M.data[0]
+                    self.train_hist['D_loss'].append(D_loss.data[0])
 
                 if ((iter + 1) % 100) == 0:
-                    print("Epoch: [%2d] [%4d/%4d] D_loss: %.8f, G_loss: %.8f, M: %.8f, k: %.8f" %
-                          ((epoch + 1), (iter + 1), self.data_loader.dataset.__len__() // self.batch_size, D_loss.data[0], G_loss.data[0], self.M, self.k))
+                    print("Epoch: [%2d] [%4d/%4d] D_loss: %.8f, G_loss: %.8f" %
+                          ((epoch + 1), (iter + 1), self.data_loader.dataset.__len__() // self.batch_size, D_loss.data[0], G_loss.data[0]))
 
             self.train_hist['per_epoch_time'].append(time.time() - epoch_start_time)
             self.visualize_results((epoch+1))

@@ -1,19 +1,26 @@
-import utils, torch, time, os, pickle, random
+import utils, torch, time, os, pickle
 import numpy as np
 import torch.nn as nn
 import torch.optim as optim
 from torch.autograd import Variable
+from torch.utils.data import DataLoader
+from torchvision import datasets, transforms
 
 class generator(nn.Module):
     # Network Architecture is exactly same as in infoGAN (https://arxiv.org/abs/1606.03657)
     # Architecture : FC1024_BR-FC7x7x128_BR-(64)4dc2s_BR-(1)4dc2s_S
     def __init__(self, dataset = 'mnist'):
         super(generator, self).__init__()
-        if dataset == 'mnist' or 'fashion-mnist':
+        if dataset == 'mnist' or dataset == 'fashion-mnist':
             self.input_height = 28
             self.input_width = 28
             self.input_dim = 62
             self.output_dim = 1
+        elif dataset == 'celebA':
+            self.input_height = 64
+            self.input_width = 64
+            self.input_dim = 62
+            self.output_dim = 3
 
         self.fc = nn.Sequential(
             nn.Linear(self.input_dim, 1024),
@@ -44,10 +51,15 @@ class discriminator(nn.Module):
     # Architecture : (64)4c2s-(128)4c2s_BL-FC1024_BL-FC1_S
     def __init__(self, dataset = 'mnist'):
         super(discriminator, self).__init__()
-        if dataset == 'mnist' or 'fashion-mnist':
+        if dataset == 'mnist' or dataset == 'fashion-mnist':
             self.input_height = 28
             self.input_width = 28
             self.input_dim = 1
+            self.output_dim = 1
+        elif dataset == 'celebA':
+            self.input_height = 64
+            self.input_width = 64
+            self.input_dim = 3
             self.output_dim = 1
 
         self.conv = nn.Sequential(
@@ -103,8 +115,21 @@ class WGAN(object):
         utils.print_network(self.D)
         print('-----------------------------------------------')
 
-        # load mnist
-        self.data_X, self.data_Y = utils.load_mnist(args.dataset)
+        # load dataset
+        if self.dataset == 'mnist':
+            self.data_loader = DataLoader(datasets.MNIST('data/mnist', train=True, download=True,
+                                                         transform=transforms.Compose(
+                                                             [transforms.ToTensor()])),
+                                          batch_size=self.batch_size, shuffle=True)
+        elif self.dataset == 'fashion-mnist':
+            self.data_loader = DataLoader(
+                datasets.FashionMNIST('data/fashion-mnist', train=True, download=True, transform=transforms.Compose(
+                    [transforms.ToTensor()])),
+                batch_size=self.batch_size, shuffle=True)
+        elif self.dataset == 'celebA':
+            self.data_loader = utils.load_celebA('data/celebA', transform=transforms.Compose(
+                [transforms.CenterCrop(160), transforms.Scale(64), transforms.ToTensor()]), batch_size=self.batch_size,
+                                                 shuffle=True)
         self.z_dim = 62
 
         # fixed noise
@@ -131,54 +156,53 @@ class WGAN(object):
         for epoch in range(self.epoch):
             self.G.train()
             epoch_start_time = time.time()
-            for iter in range(len(self.data_X) // self.batch_size):
+            for iter, (x_, _) in enumerate(self.data_loader):
+                if iter == self.data_loader.dataset.__len__() // self.batch_size:
+                    break
+
+                z_ = torch.rand((self.batch_size, self.z_dim))
+
+                if self.gpu_mode:
+                    x_, z_ = Variable(x_.cuda()), Variable(z_.cuda())
+                else:
+                    x_, z_ = Variable(x_), Variable(z_)
+
                 # update D network
-                D_losses = []
-                for _ in range(self.n_critic):
-                    inds = random.sample(range(0, len(self.data_X)), self.batch_size)
-                    x_ = self.data_X[inds, :, :, :]
-                    z_ = torch.rand((self.batch_size, self.z_dim))
+                self.D_optimizer.zero_grad()
 
-                    if self.gpu_mode:
-                        x_, z_ = Variable(x_.cuda()), Variable(z_.cuda())
-                    else:
-                        x_, z_ = Variable(x_), Variable(z_)
-
-                    self.D_optimizer.zero_grad()
-
-                    D_real = self.D(x_)
-                    D_real_loss = -torch.mean(D_real)
-
-                    G_ = self.G(z_)
-                    D_fake = self.D(G_)
-                    D_fake_loss = torch.mean(D_fake)
-
-                    D_loss = D_real_loss + D_fake_loss
-                    D_losses.append(D_loss.data[0])
-
-                    D_loss.backward()
-                    self.D_optimizer.step()
-
-                    # clipping D
-                    for p in self.D.parameters():
-                        p.data.clamp_(-self.c, self.c)
-
-                self.train_hist['D_loss'].append(np.mean(D_losses))
-
-                # update G network
-                self.G_optimizer.zero_grad()
+                D_real = self.D(x_)
+                D_real_loss = -torch.mean(D_real)
 
                 G_ = self.G(z_)
                 D_fake = self.D(G_)
-                G_loss = -torch.mean(D_fake)
-                self.train_hist['G_loss'].append(G_loss.data[0])
+                D_fake_loss = torch.mean(D_fake)
 
-                G_loss.backward()
-                self.G_optimizer.step()
+                D_loss = D_real_loss + D_fake_loss
+
+                D_loss.backward()
+                self.D_optimizer.step()
+
+                # clipping D
+                for p in self.D.parameters():
+                    p.data.clamp_(-self.c, self.c)
+
+                if ((iter+1) % self.n_critic) == 0:
+                    # update G network
+                    self.G_optimizer.zero_grad()
+
+                    G_ = self.G(z_)
+                    D_fake = self.D(G_)
+                    G_loss = -torch.mean(D_fake)
+                    self.train_hist['G_loss'].append(G_loss.data[0])
+
+                    G_loss.backward()
+                    self.G_optimizer.step()
+
+                    self.train_hist['D_loss'].append(D_loss.data[0])
 
                 if ((iter + 1) % 100) == 0:
                     print("Epoch: [%2d] [%4d/%4d] D_loss: %.8f, G_loss: %.8f" %
-                          ((epoch + 1), (iter + 1), len(self.data_X) // self.batch_size, D_loss.data[0], G_loss.data[0]))
+                          ((epoch + 1), (iter + 1), self.data_loader.dataset.__len__() // self.batch_size, D_loss.data[0], G_loss.data[0]))
 
             self.train_hist['per_epoch_time'].append(time.time() - epoch_start_time)
             self.visualize_results((epoch+1))
