@@ -123,7 +123,7 @@ CGAN | <img src = 'assets/fashion_mnist_results/CGAN_epoch001.png' height = '200
 ACGAN | <img src = 'assets/fashion_mnist_results/ACGAN_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/ACGAN_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/ACGAN_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/ACGAN_generate_animation.gif' height = '200px'>
 infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/infoGAN_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/infoGAN_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/infoGAN_generate_animation.gif' height = '200px'>
 
-Without hyper-parameter tuning from mnist-version, infoGAN does not work well as compared iwth CGAN/ACGAN.  
+Without hyper-parameter tuning from mnist-version, infoGAN does not work well as compared with CGAN/ACGAN.  
 ACGAN tends to fall into mode-collapse in [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections), but Pytorch ACGAN does not fall into mode-collapse.
 infoGAN tends to ignore noise-vector. It results in that various style within the same class can not be represented.
 
@@ -150,7 +150,23 @@ ACGAN | <img src = 'assets/fashion_mnist_results/ACGAN_loss.png' height = '230px
 infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_loss.png' height = '230px'>
 
 ### Results for celebA
-It will be updated soon.
+celebA dataset tested in GAN, LSGAN, WGAN, WGAN_GP, DRAGAN, EBGAN, BEGAN. Each sample was resized 64x64.
+
+#### Fixed generation
+All results are generated from the fixed noise vector.
+
+*Name* | *Epoch 1* | *Epoch 10* | *Epoch 25* | *GIF*
+:---: | :---: | :---: | :---: | :---: |
+GAN | <img src = 'assets/celebA_results/GAN_epoch001.png' height = '200px'> | <img src = 'assets/celebA_results/GAN_epoch010.png' height = '200px'> | <img src = 'assets/celebA_results/GAN_epoch025.png' height = '200px'> | <img src = 'assets/celebA_results/GAN_generate_animation.gif' height = '200px'>
+LSGAN | <img src = 'assets/celebA_results/LSGAN_epoch001.png' height = '200px'> | <img src = 'assets/celebA_results/LSGAN_epoch010.png' height = '200px'> | <img src = 'assets/celebA_results/LSGAN_epoch025.png' height = '200px'> | <img src = 'assets/celebA_results/LSGAN_generate_animation.gif' height = '200px'>
+WGAN | <img src = 'assets/celebA_results/WGAN_epoch001.png' height = '200px'> | <img src = 'assets/celebA_results/WGAN_epoch010.png' height = '200px'> | <img src = 'assets/celebA_results/WGAN_epoch025.png' height = '200px'> | <img src = 'assets/celebA_results/WGAN_generate_animation.gif' height = '200px'>
+WGAN_GP | <img src = 'assets/celebA_results/WGAN_GP_epoch001.png' height = '200px'> | <img src = 'assets/celebA_results/WGAN_GP_epoch010.png' height = '200px'> | <img src = 'assets/celebA_results/WGAN_GP_epoch025.png' height = '200px'> | <img src = 'assets/celebA_results/WGAN_GP_generate_animation.gif' height = '200px'>
+DRAGAN | <img src = 'assets/celebA_results/DRAGAN_epoch001.png' height = '200px'> | <img src = 'assets/celebA_results/DRAGAN_epoch010.png' height = '200px'> | <img src = 'assets/celebA_results/DRAGAN_epoch025.png' height = '200px'> | <img src = 'assets/celebA_results/DRAGAN_generate_animation.gif' height = '200px'>
+EBGAN | <img src = 'assets/celebA_results/EBGAN_epoch001.png' height = '200px'> | <img src = 'assets/celebA_results/EBGAN_epoch010.png' height = '200px'> | <img src = 'assets/celebA_results/EBGAN_epoch025.png' height = '200px'> | <img src = 'assets/celebA_results/EBGAN_generate_animation.gif' height = '200px'>
+BEGAN | <img src = 'assets/celebA_results/BEGAN_epoch001.png' height = '200px'> | <img src = 'assets/celebA_results/BEGAN_epoch010.png' height = '200px'> | <img src = 'assets/celebA_results/BEGAN_epoch025.png' height = '200px'> | <img src = 'assets/celebA_results/BEGAN_generate_animation.gif' height = '200px'>
+
+Without hyper-parameter tuning from mnist-version.
+WGAN_GP does not work well as compared with MNIST/fashion-MNIST. 
 
 ## Folder structure
 The following shows basic folder structure.
