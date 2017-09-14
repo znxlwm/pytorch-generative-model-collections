@@ -147,13 +147,13 @@ class WGAN(object):
                     self.D_optimizer.zero_grad()
 
                     D_real = self.D(x_)
-                    D_real_loss = torch.mean(D_real)
+                    D_real_loss = -torch.mean(D_real)
 
                     G_ = self.G(z_)
                     D_fake = self.D(G_)
                     D_fake_loss = torch.mean(D_fake)
 
-                    D_loss = D_real_loss - D_fake_loss
+                    D_loss = D_real_loss + D_fake_loss
                     D_losses.append(D_loss.data[0])
 
                     D_loss.backward()
@@ -170,7 +170,7 @@ class WGAN(object):
 
                 G_ = self.G(z_)
                 D_fake = self.D(G_)
-                G_loss = torch.mean(D_fake)
+                G_loss = -torch.mean(D_fake)
                 self.train_hist['G_loss'].append(G_loss.data[0])
 
                 G_loss.backward()
