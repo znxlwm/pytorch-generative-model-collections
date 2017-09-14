@@ -24,6 +24,7 @@ This repository is included code for CPU mode Pytorch, but i did not test. I tes
 **GAN** | [Arxiv](https://arxiv.org/abs/1406.2661) | <img src = 'assets/equations/GAN.png' height = '70px'>
 **LSGAN**| [Arxiv](https://arxiv.org/abs/1611.04076) | <img src = 'assets/equations/LSGAN.png' height = '70px'>
 **WGAN**| [Arxiv](https://arxiv.org/abs/1701.07875) | <img src = 'assets/equations/WGAN.png' height = '105px'>
+**WGAN_GP**| [Arxiv](https://arxiv.org/abs/1704.00028) | <img src = 'assets/equations/WGAN_GP.png' height = '70px'>
 **DRAGAN**| [Arxiv](https://arxiv.org/abs/1705.07215) | <img src = 'assets/equations/DRAGAN.png' height = '70px'>
 **CGAN**| [Arxiv](https://arxiv.org/abs/1411.1784) | <img src = 'assets/equations/CGAN.png' height = '70px'>
 **infoGAN**| [Arxiv](https://arxiv.org/abs/1606.03657) | <img src = 'assets/equations/infoGAN.png' height = '70px'>
@@ -51,6 +52,7 @@ All results are generated from the fixed noise vector.
 GAN | <img src = 'assets/mnist_results/GAN_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/GAN_epoch010.png' height = '200px'> | <img src = 'assets/mnist_results/GAN_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/GAN_generate_animation.gif' height = '200px'>
 LSGAN | <img src = 'assets/mnist_results/LSGAN_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/LSGAN_epoch010.png' height = '200px'> | <img src = 'assets/mnist_results/LSGAN_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/LSGAN_generate_animation.gif' height = '200px'>
 WGAN | <img src = 'assets/mnist_results/WGAN_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/WGAN_epoch010.png' height = '200px'> | <img src = 'assets/mnist_results/WGAN_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/WGAN_generate_animation.gif' height = '200px'>
+WGAN_GP | <img src = 'assets/mnist_results/WGAN_GP_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/WGAN_GP_epoch010.png' height = '200px'> | <img src = 'assets/mnist_results/WGAN_GP_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/WGAN_GP_generate_animation.gif' height = '200px'>
 DRAGAN | <img src = 'assets/mnist_results/DRAGAN_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/DRAGAN_epoch010.png' height = '200px'> | <img src = 'assets/mnist_results/DRAGAN_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/DRAGAN_generate_animation.gif' height = '200px'>
 EBGAN | <img src = 'assets/mnist_results/EBGAN_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/EBGAN_epoch010.png' height = '200px'> | <img src = 'assets/mnist_results/EBGAN_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/EBGAN_generate_animation.gif' height = '200px'>
 BEGAN | <img src = 'assets/mnist_results/BEGAN_epoch001.png' height = '200px'> | <img src = 'assets/mnist_results/BEGAN_epoch010.png' height = '200px'> | <img src = 'assets/mnist_results/BEGAN_epoch025.png' height = '200px'> | <img src = 'assets/mnist_results/BEGAN_generate_animation.gif' height = '200px'>
@@ -78,6 +80,7 @@ infoGAN | <img src = 'assets/mnist_results/infoGAN_cont_epoch001.png' height = '
 GAN | <img src = 'assets/mnist_results/GAN_loss.png' height = '230px'>
 LSGAN | <img src = 'assets/mnist_results/LSGAN_loss.png' height = '230px'>
 WGAN | <img src = 'assets/mnist_results/WGAN_loss.png' height = '230px'>
+WGAN_GP | <img src = 'assets/mnist_results/WGAN_GP_loss.png' height = '230px'>
 DRAGAN | <img src = 'assets/mnist_results/DRAGAN_loss.png' height = '230px'>
 EBGAN | <img src = 'assets/mnist_results/EBGAN_loss.png' height = '230px'>
 BEGAN | <img src = 'assets/mnist_results/BEGAN_loss.png' height = '230px'>
@@ -102,6 +105,7 @@ All results are generated from the fixed noise vector.
 GAN | <img src = 'assets/fashion_mnist_results/GAN_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/GAN_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/GAN_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/GAN_generate_animation.gif' height = '200px'>
 LSGAN | <img src = 'assets/fashion_mnist_results/LSGAN_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/LSGAN_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/LSGAN_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/LSGAN_generate_animation.gif' height = '200px'>
 WGAN | <img src = 'assets/fashion_mnist_results/WGAN_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/WGAN_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/WGAN_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/WGAN_generate_animation.gif' height = '200px'>
+WGAN_GP | <img src = 'assets/fashion_mnist_results/WGAN_GP_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/WGAN_GP_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/WGAN_GP_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/WGAN_GP_generate_animation.gif' height = '200px'>
 DRAGAN | <img src = 'assets/fashion_mnist_results/DRAGAN_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/DRAGAN_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/DRAGAN_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/DRAGAN_generate_animation.gif' height = '200px'>
 EBGAN | <img src = 'assets/fashion_mnist_results/EBGAN_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/EBGAN_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/EBGAN_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/EBGAN_generate_animation.gif' height = '200px'>
 BEGAN | <img src = 'assets/fashion_mnist_results/BEGAN_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/BEGAN_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/BEGAN_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/BEGAN_generate_animation.gif' height = '200px'>
@@ -133,6 +137,7 @@ infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_cont_epoch001.png' he
 GAN | <img src = 'assets/fashion_mnist_results/GAN_loss.png' height = '230px'>
 LSGAN | <img src = 'assets/fashion_mnist_results/LSGAN_loss.png' height = '230px'>
 WGAN | <img src = 'assets/fashion_mnist_results/WGAN_loss.png' height = '230px'>
+WGAN_GP | <img src = 'assets/fashion_mnist_results/WGAN_GP_loss.png' height = '230px'>
 DRAGAN | <img src = 'assets/fashion_mnist_results/DRAGAN_loss.png' height = '230px'>
 EBGAN | <img src = 'assets/fashion_mnist_results/EBGAN_loss.png' height = '230px'>
 BEGAN | <img src = 'assets/fashion_mnist_results/BEGAN_loss.png' height = '230px'>
