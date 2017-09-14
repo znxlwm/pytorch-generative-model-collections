@@ -149,7 +149,7 @@ CGAN | <img src = 'assets/fashion_mnist_results/CGAN_loss.png' height = '230px'>
 ACGAN | <img src = 'assets/fashion_mnist_results/ACGAN_loss.png' height = '230px'>
 infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_loss.png' height = '230px'>
 
-### Results for celebA
+### Results for celebA (It will be update soon)
 celebA dataset tested in GAN, LSGAN, WGAN, WGAN_GP, DRAGAN, EBGAN, BEGAN. Each sample was resized 64x64.
 
 #### Fixed generation
