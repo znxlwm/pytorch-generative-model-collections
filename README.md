@@ -11,12 +11,10 @@ This repository is included code for CPU mode Pytorch, but i did not test. I tes
 
 ## Difference from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections)
 - This repository does not have WGAN-GP and Variational Auto-Encoders.
-- All models use only 25 training epochs.
 - DRAGAN : The DRAGAN loss calculation method is different.
 - ACGAN : The learning procedure is different.
-- WGAN : The training of the discriminator is repeats 5 times in one iteration.
-- EBGAN : The last layer of discriminator does not use sigmoid activation function.
-- BEGAN : L1 norm is used instead of L2 norm.
+- EBGAN : MSE is used instead of L2 norm and the last layer of discriminator does not use sigmoid activation function.
+- BEGAN : L1 norm is used instead of L2 norm and the last layer of discriminator does not use sigmoid activation function.
 
 ## Generative Adversarial Networks (GANs)
 ### Lists (Table is borrowed from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections))
@@ -33,7 +31,7 @@ This repository is included code for CPU mode Pytorch, but i did not test. I tes
 **EBGAN**| [Arxiv](https://arxiv.org/abs/1609.03126) | <img src = 'assets/equations/EBGAN.png' height = '70px'>
 **BEGAN**| [Arxiv](https://arxiv.org/abs/1703.10717) | <img src = 'assets/equations/BEGAN.png' height = '105px'>  
 
-#### Variants of GAN structure (Figure is borrowed from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections))
+#### Variants of GAN structure (Figures are borrowed from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections))
 <img src = 'assets/etc/GAN_structure.png' height = '600px'>
 
 ### Results for mnist
