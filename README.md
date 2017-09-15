@@ -166,7 +166,7 @@ EBGAN | <img src = 'assets/celebA_results/EBGAN_epoch001.png' height = '200px'> 
 BEGAN | <img src = 'assets/celebA_results/BEGAN_epoch001.png' height = '200px'> | <img src = 'assets/celebA_results/BEGAN_epoch010.png' height = '200px'> | <img src = 'assets/celebA_results/BEGAN_epoch025.png' height = '200px'> | <img src = 'assets/celebA_results/BEGAN_generate_animation.gif' height = '200px'>
 
 - Without hyper-parameter tuning from mnist-version.
-- For WGAN_GP, BEGAN, and EBGAN, celebA shows low performance as compared with MNIST/fashion-MNIST. I guess the reason is that they use the same network architecture as MNIST/fashion-MNIST. I'm not sure, but maybe the network capacity is not enough for celebA.
+- For WGAN_GP, BEGAN, and EBGAN, celebA shows low performance as compared with MNIST/fashion-MNIST. I guess the reason is that they used the same network architecture as MNIST/fashion-MNIST. I'm not sure, but maybe the network capacity is not enough for celebA.
 
 ## Folder structure
 The following shows basic folder structure.
