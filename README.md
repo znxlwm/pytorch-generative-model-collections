@@ -123,9 +123,9 @@ CGAN | <img src = 'assets/fashion_mnist_results/CGAN_epoch001.png' height = '200
 ACGAN | <img src = 'assets/fashion_mnist_results/ACGAN_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/ACGAN_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/ACGAN_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/ACGAN_generate_animation.gif' height = '200px'>
 infoGAN | <img src = 'assets/fashion_mnist_results/infoGAN_epoch001.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/infoGAN_epoch010.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/infoGAN_epoch025.png' height = '200px'> | <img src = 'assets/fashion_mnist_results/infoGAN_generate_animation.gif' height = '200px'>
 
-Without hyper-parameter tuning from mnist-version, infoGAN does not work well as compared with CGAN/ACGAN.  
-ACGAN tends to fall into mode-collapse in [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections), but Pytorch ACGAN does not fall into mode-collapse.
-infoGAN tends to ignore noise-vector. It results in that various style within the same class can not be represented.
+- Without hyper-parameter tuning from mnist-version, infoGAN does not work well as compared with CGAN/ACGAN.  
+- ACGAN tends to fall into mode-collapse in [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections), but Pytorch ACGAN does not fall into mode-collapse.
+- infoGAN tends to ignore noise-vector. It results in that various style within the same class can not be represented.
 
 #### InfoGAN : Manipulating two continous codes
 All results have the same noise vector and label condition, but have different continous vector.
@@ -165,8 +165,8 @@ DRAGAN | <img src = 'assets/celebA_results/DRAGAN_epoch001.png' height = '200px'
 EBGAN | <img src = 'assets/celebA_results/EBGAN_epoch001.png' height = '200px'> | <img src = 'assets/celebA_results/EBGAN_epoch010.png' height = '200px'> | <img src = 'assets/celebA_results/EBGAN_epoch025.png' height = '200px'> | <img src = 'assets/celebA_results/EBGAN_generate_animation.gif' height = '200px'>
 BEGAN | <img src = 'assets/celebA_results/BEGAN_epoch001.png' height = '200px'> | <img src = 'assets/celebA_results/BEGAN_epoch010.png' height = '200px'> | <img src = 'assets/celebA_results/BEGAN_epoch025.png' height = '200px'> | <img src = 'assets/celebA_results/BEGAN_generate_animation.gif' height = '200px'>
 
-Without hyper-parameter tuning from mnist-version.
-WGAN_GP does not work well as compared with MNIST/fashion-MNIST. 
+- Without hyper-parameter tuning from mnist-version.
+- For WGAN_GP, BEGAN, and EBGAN, celebA shows low performance as compared with MNIST/fashion-MNIST. I guess the reason is that they use the same network architecture as MNIST/fashion-MNIST. I'm not sure, but maybe the network capacity is not enough for celebA.
 
 ## Folder structure
 The following shows basic folder structure.
