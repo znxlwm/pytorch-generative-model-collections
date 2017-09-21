@@ -14,7 +14,7 @@ This repository is included code for CPU mode Pytorch, but i did not test. I tes
 - infoGAN, ACGAN, CGAN used dataset downloaded from MNIST (http://yann.lecun.com/exdb/mnist/) and fashion-MNIST (https://github.com/zalandoresearch/fashion-mnist).
 
 ## Difference from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections)
-- This repository does not have WGAN-GP and Variational Auto-Encoders.
+- This repository does not have Variational Auto-Encoders.
 - DRAGAN : The DRAGAN loss calculation method is different.
 - ACGAN : The learning procedure is different.
 - EBGAN : MSE is used instead of L2 norm and the last layer of discriminator does not use sigmoid activation function.
