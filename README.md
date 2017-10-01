@@ -23,7 +23,7 @@ This repository is included code for CPU mode Pytorch, but i did not test. I tes
 ## Generative Adversarial Networks (GANs)
 ### Lists (Table is borrowed from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections))
 
-*Name* | *Paer Link* | *Value Function*
+*Name* | *Paper Link* | *Value Function*
 :---: | :---: | :--- |
 **GAN** | [Arxiv](https://arxiv.org/abs/1406.2661) | <img src = 'assets/equations/GAN.png' height = '70px'>
 **LSGAN**| [Arxiv](https://arxiv.org/abs/1611.04076) | <img src = 'assets/equations/LSGAN.png' height = '70px'>
