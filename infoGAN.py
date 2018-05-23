@@ -75,7 +75,7 @@ class discriminator(nn.Module):
         x = self.conv(input)
         x = x.view(-1, 128 * (self.input_height // 4) * (self.input_width // 4))
         x = self.fc(x)
-        a = F.sigmoid(x[:, self.output_dim])
+        a = F.sigmoid(x[:, :self.output_dim])
         b = x[:, self.output_dim:self.output_dim + self.len_continuous_code]
         c = x[:, self.output_dim + self.len_continuous_code:]
 
