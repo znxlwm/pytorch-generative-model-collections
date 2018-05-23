@@ -183,7 +183,7 @@ class ACGAN(object):
                 C_fake_loss = self.CE_loss(C_fake, torch.max(y_vec_, 1)[1])
 
                 D_loss = D_real_loss + C_real_loss + D_fake_loss + C_fake_loss
-                self.train_hist['D_loss'].append(D_loss.data[0])
+                self.train_hist['D_loss'].append(D_loss.data.item())
 
                 D_loss.backward()
                 self.D_optimizer.step()
@@ -198,14 +198,14 @@ class ACGAN(object):
                 C_fake_loss = self.CE_loss(C_fake, torch.max(y_vec_, 1)[1])
 
                 G_loss += C_fake_loss
-                self.train_hist['G_loss'].append(G_loss.data[0])
+                self.train_hist['G_loss'].append(G_loss.data.item())
 
                 G_loss.backward()
                 self.G_optimizer.step()
 
                 if ((iter + 1) % 100) == 0:
                     print("Epoch: [%2d] [%4d/%4d] D_loss: %.8f, G_loss: %.8f" %
-                          ((epoch + 1), (iter + 1), len(self.data_X) // self.batch_size, D_loss.data[0], G_loss.data[0]))
+                          ((epoch + 1), (iter + 1), len(self.data_X) // self.batch_size, D_loss.data.item(), G_loss.data.item()))
 
             self.train_hist['per_epoch_time'].append(time.time() - epoch_start_time)
             self.visualize_results((epoch+1))

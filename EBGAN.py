@@ -191,7 +191,7 @@ class EBGAN(object):
                     D_loss = D_real_err + (self.margin - D_fake_err)
                 else:
                     D_loss = D_real_err
-                self.train_hist['D_loss'].append(D_loss.data[0])
+                self.train_hist['D_loss'].append(D_loss.data.item())
 
                 D_loss.backward()
                 self.D_optimizer.step()
@@ -203,14 +203,14 @@ class EBGAN(object):
                 D_fake, D_fake_code = self.D(G_)
                 D_fake_err = self.MSE_loss(D_fake, G_.detach())
                 G_loss = D_fake_err + self.pt_loss_weight * self.pullaway_loss(D_fake_code)
-                self.train_hist['G_loss'].append(G_loss.data[0])
+                self.train_hist['G_loss'].append(G_loss.data.item())
 
                 G_loss.backward()
                 self.G_optimizer.step()
 
                 if ((iter + 1) % 100) == 0:
                     print("Epoch: [%2d] [%4d/%4d] D_loss: %.8f, G_loss: %.8f" %
-                          ((epoch + 1), (iter + 1), self.data_loader.dataset.__len__() // self.batch_size, D_loss.data[0], G_loss.data[0]))
+                          ((epoch + 1), (iter + 1), self.data_loader.dataset.__len__() // self.batch_size, D_loss.data.item(), G_loss.data.item()))
 
             self.train_hist['per_epoch_time'].append(time.time() - epoch_start_time)
             self.visualize_results((epoch+1))

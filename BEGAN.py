@@ -188,7 +188,7 @@ class BEGAN(object):
                 D_fake_err = torch.mean(torch.abs(D_fake - G_))
 
                 D_loss = D_real_err - self.k * D_fake_err
-                self.train_hist['D_loss'].append(D_loss.data[0])
+                self.train_hist['D_loss'].append(D_loss.data.item())
 
                 D_loss.backward()
                 self.D_optimizer.step()
@@ -201,7 +201,7 @@ class BEGAN(object):
                 D_fake_err = torch.mean(torch.abs(D_fake - G_))
 
                 G_loss = D_fake_err
-                self.train_hist['G_loss'].append(G_loss.data[0])
+                self.train_hist['G_loss'].append(G_loss.data.item())
 
                 G_loss.backward()
                 self.G_optimizer.step()
@@ -211,15 +211,15 @@ class BEGAN(object):
 
                 # operation for updating k
                 temp_k = self.k + self.lambda_ * (self.gamma * D_real_err - D_fake_err)
-                temp_k = temp_k.data[0]
+                temp_k = temp_k.data.item()
 
-                # self.k = temp_k.data[0]
+                # self.k = temp_k.data.item()
                 self.k = min(max(temp_k, 0), 1)
-                self.M = temp_M.data[0]
+                self.M = temp_M.data.item()
 
                 if ((iter + 1) % 100) == 0:
                     print("Epoch: [%2d] [%4d/%4d] D_loss: %.8f, G_loss: %.8f, M: %.8f, k: %.8f" %
-                          ((epoch + 1), (iter + 1), self.data_loader.dataset.__len__() // self.batch_size, D_loss.data[0], G_loss.data[0], self.M, self.k))
+                          ((epoch + 1), (iter + 1), self.data_loader.dataset.__len__() // self.batch_size, D_loss.data.item(), G_loss.data.item(), self.M, self.k))
 
             self.train_hist['per_epoch_time'].append(time.time() - epoch_start_time)
             self.visualize_results((epoch+1))
