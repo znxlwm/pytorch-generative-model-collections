@@ -200,7 +200,7 @@ class DRAGAN(object):
                 gradient_penalty = self.lambda_ * ((gradients.view(gradients.size()[0], -1).norm(2, 1) - 1) ** 2).mean()
 
                 D_loss = D_real_loss + D_fake_loss + gradient_penalty
-                self.train_hist['D_loss'].append(D_loss.data[0])
+                self.train_hist['D_loss'].append(D_loss.data.item())
                 D_loss.backward()
                 self.D_optimizer.step()
 
@@ -211,14 +211,14 @@ class DRAGAN(object):
                 D_fake = self.D(G_)
 
                 G_loss = self.BCE_loss(D_fake, self.y_real_)
-                self.train_hist['G_loss'].append(G_loss.data[0])
+                self.train_hist['G_loss'].append(G_loss.data.item())
 
                 G_loss.backward()
                 self.G_optimizer.step()
 
                 if ((iter + 1) % 100) == 0:
                     print("Epoch: [%2d] [%4d/%4d] D_loss: %.8f, G_loss: %.8f" %
-                          ((epoch + 1), (iter + 1), self.data_loader.dataset.__len__() // self.batch_size, D_loss.data[0], G_loss.data[0]))
+                          ((epoch + 1), (iter + 1), self.data_loader.dataset.__len__() // self.batch_size, D_loss.data.item(), G_loss.data.item()))
 
             self.train_hist['per_epoch_time'].append(time.time() - epoch_start_time)
             self.visualize_results((epoch+1))

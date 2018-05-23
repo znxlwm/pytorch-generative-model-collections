@@ -75,7 +75,7 @@ class discriminator(nn.Module):
         x = self.conv(input)
         x = x.view(-1, 128 * (self.input_height // 4) * (self.input_width // 4))
         x = self.fc(x)
-        a = F.sigmoid(x[:, self.output_dim])
+        a = F.sigmoid(x[:, :self.output_dim])
         b = x[:, self.output_dim:self.output_dim + self.len_continuous_code]
         c = x[:, self.output_dim + self.len_continuous_code:]
 
@@ -221,7 +221,7 @@ class infoGAN(object):
                 D_fake_loss = self.BCE_loss(D_fake, self.y_fake_)
 
                 D_loss = D_real_loss + D_fake_loss
-                self.train_hist['D_loss'].append(D_loss.data[0])
+                self.train_hist['D_loss'].append(D_loss.data.item())
 
                 D_loss.backward(retain_graph=True)
                 self.D_optimizer.step()
@@ -233,7 +233,7 @@ class infoGAN(object):
                 D_fake, D_cont, D_disc = self.D(G_)
 
                 G_loss = self.BCE_loss(D_fake, self.y_real_)
-                self.train_hist['G_loss'].append(G_loss.data[0])
+                self.train_hist['G_loss'].append(G_loss.data.item())
 
                 G_loss.backward(retain_graph=True)
                 self.G_optimizer.step()
@@ -242,7 +242,7 @@ class infoGAN(object):
                 disc_loss = self.CE_loss(D_disc, torch.max(y_disc_, 1)[1])
                 cont_loss = self.MSE_loss(D_cont, y_cont_)
                 info_loss = disc_loss + cont_loss
-                self.train_hist['info_loss'].append(info_loss.data[0])
+                self.train_hist['info_loss'].append(info_loss.data.item())
 
                 info_loss.backward()
                 self.info_optimizer.step()
@@ -250,7 +250,7 @@ class infoGAN(object):
 
                 if ((iter + 1) % 100) == 0:
                     print("Epoch: [%2d] [%4d/%4d] D_loss: %.8f, G_loss: %.8f, info_loss: %.8f" %
-                          ((epoch + 1), (iter + 1), len(self.data_X) // self.batch_size, D_loss.data[0], G_loss.data[0], info_loss.data[0]))
+                          ((epoch + 1), (iter + 1), len(self.data_X) // self.batch_size, D_loss.data.item(), G_loss.data.item(), info_loss.data.item()))
 
             self.train_hist['per_epoch_time'].append(time.time() - epoch_start_time)
             self.visualize_results((epoch+1))
