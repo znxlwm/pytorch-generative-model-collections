@@ -2,32 +2,23 @@ import utils, torch, time, os, pickle
 import numpy as np
 import torch.nn as nn
 import torch.optim as optim
-from torch.autograd import Variable
-from torch.utils.data import DataLoader
-from torchvision import datasets, transforms
+from dataloader import dataloader
 
 class generator(nn.Module):
     # Network Architecture is exactly same as in infoGAN (https://arxiv.org/abs/1606.03657)
     # Architecture : FC1024_BR-FC7x7x128_BR-(64)4dc2s_BR-(1)4dc2s_S
-    def __init__(self, dataset = 'mnist'):
+    def __init__(self, input_dim=100, output_dim=1, input_size=32):
         super(generator, self).__init__()
-        if dataset == 'mnist' or dataset == 'fashion-mnist':
-            self.input_height = 28
-            self.input_width = 28
-            self.input_dim = 62
-            self.output_dim = 1
-        elif dataset == 'celebA':
-            self.input_height = 64
-            self.input_width = 64
-            self.input_dim = 62
-            self.output_dim = 3
+        self.input_dim = input_dim
+        self.output_dim = output_dim
+        self.input_size = input_size
 
         self.fc = nn.Sequential(
             nn.Linear(self.input_dim, 1024),
             nn.BatchNorm1d(1024),
             nn.ReLU(),
-            nn.Linear(1024, 128 * (self.input_height // 4) * (self.input_width // 4)),
-            nn.BatchNorm1d(128 * (self.input_height // 4) * (self.input_width // 4)),
+            nn.Linear(1024, 128 * (self.input_size // 4) * (self.input_size // 4)),
+            nn.BatchNorm1d(128 * (self.input_size // 4) * (self.input_size // 4)),
             nn.ReLU(),
         )
         self.deconv = nn.Sequential(
@@ -35,13 +26,13 @@ class generator(nn.Module):
             nn.BatchNorm2d(64),
             nn.ReLU(),
             nn.ConvTranspose2d(64, self.output_dim, 4, 2, 1),
-            nn.Sigmoid(),
+            nn.Tanh(),
         )
         utils.initialize_weights(self)
 
     def forward(self, input):
         x = self.fc(input)
-        x = x.view(-1, 128, (self.input_height // 4), (self.input_width // 4))
+        x = x.view(-1, 128, (self.input_size // 4), (self.input_size // 4))
         x = self.deconv(x)
 
         return x
@@ -49,42 +40,32 @@ class generator(nn.Module):
 class discriminator(nn.Module):
     # It must be Auto-Encoder style architecture
     # Architecture : (64)4c2s-FC32-FC64*14*14_BR-(1)4dc2s_S
-    def __init__(self, dataset = 'mnist'):
+    def __init__(self, input_dim=1, output_dim=1, input_size=32):
         super(discriminator, self).__init__()
-        if dataset == 'mnist' or dataset == 'fashion-mnist':
-            self.input_height = 28
-            self.input_width = 28
-            self.input_dim = 1
-            self.output_dim = 1
-        elif dataset == 'celebA':
-            self.input_height = 64
-            self.input_width = 64
-            self.input_dim = 3
-            self.output_dim = 3
+        self.input_dim = input_dim
+        self.output_dim = output_dim
+        self.input_size = input_size
 
         self.conv = nn.Sequential(
             nn.Conv2d(self.input_dim, 64, 4, 2, 1),
             nn.ReLU(),
         )
         self.fc = nn.Sequential(
-            nn.Linear(64 * (self.input_height // 2) * (self.input_width // 2), 32),
-            nn.BatchNorm1d(32),
-            nn.ReLU(),
-            nn.Linear(32, 64 * (self.input_height // 2) * (self.input_width // 2)),
-            nn.BatchNorm1d(64 * (self.input_height // 2) * (self.input_width // 2)),
-            nn.ReLU(),
+            nn.Linear(64 * (self.input_size // 2) * (self.input_size // 2), 32),
+            nn.Linear(32, 64 * (self.input_size // 2) * (self.input_size // 2)),
         )
         self.deconv = nn.Sequential(
             nn.ConvTranspose2d(64, self.output_dim, 4, 2, 1),
             #nn.Sigmoid(),
         )
+
         utils.initialize_weights(self)
 
     def forward(self, input):
         x = self.conv(input)
         x = x.view(x.size()[0], -1)
         x = self.fc(x)
-        x = x.view(-1, 64, (self.input_height // 2), (self.input_width // 2))
+        x = x.view(-1, 64, (self.input_size // 2), (self.input_size // 2))
         x = self.deconv(x)
 
         return x
@@ -93,7 +74,7 @@ class BEGAN(object):
     def __init__(self, args):
         # parameters
         self.epoch = args.epoch
-        self.sample_num = 64
+        self.sample_num = 100
         self.batch_size = args.batch_size
         self.save_dir = args.save_dir
         self.result_dir = args.result_dir
@@ -101,52 +82,36 @@ class BEGAN(object):
         self.log_dir = args.log_dir
         self.gpu_mode = args.gpu_mode
         self.model_name = args.gan_type
-
-        # BEGAN parameters
-        self.gamma = 0.75
+        self.input_size = args.input_size
+        self.z_dim = 62
+        self.gamma = 1
         self.lambda_ = 0.001
-        self.k = 0.
+        self.k = 0.0
+        self.lr_lower_boundary = 0.00002
+
+        # load dataset
+        self.data_loader = dataloader(self.dataset, self.input_size, self.batch_size)
+        data = self.data_loader.__iter__().__next__()[0]
 
         # networks init
-        self.G = generator(self.dataset)
-        self.D = discriminator(self.dataset)
-        self.G_optimizer = optim.Adam(self.G.parameters(), lr=args.lrG, betas=(args.beta1, args.beta2))
-        self.D_optimizer = optim.Adam(self.D.parameters(), lr=args.lrD, betas=(args.beta1, args.beta2))
+        self.G = generator(input_dim=self.z_dim, output_dim=data.shape[1], input_size=self.input_size)
+        self.D = discriminator(input_dim=data.shape[1], output_dim=1, input_size=self.input_size)
+        self.G_optimizer = optim.Adam(self.G.parameters(), lr=0.0002, betas=(args.beta1, args.beta2))
+        self.D_optimizer = optim.Adam(self.D.parameters(), lr=0.0002, betas=(args.beta1, args.beta2))
 
         if self.gpu_mode:
             self.G.cuda()
             self.D.cuda()
-            # self.L1_loss = torch.nn.L1loss().cuda()   # BEGAN does not work well when using L1loss().
-        # else:
-        #     self.L1_loss = torch.nn.L1loss()
 
         print('---------- Networks architecture -------------')
         utils.print_network(self.G)
         utils.print_network(self.D)
         print('-----------------------------------------------')
 
-        # load dataset
-        if self.dataset == 'mnist':
-            self.data_loader = DataLoader(datasets.MNIST('data/mnist', train=True, download=True,
-                                                         transform=transforms.Compose(
-                                                             [transforms.ToTensor()])),
-                                          batch_size=self.batch_size, shuffle=True)
-        elif self.dataset == 'fashion-mnist':
-            self.data_loader = DataLoader(
-                datasets.FashionMNIST('data/fashion-mnist', train=True, download=True, transform=transforms.Compose(
-                    [transforms.ToTensor()])),
-                batch_size=self.batch_size, shuffle=True)
-        elif self.dataset == 'celebA':
-            self.data_loader = utils.load_celebA('data/celebA', transform=transforms.Compose(
-                [transforms.CenterCrop(160), transforms.Scale(64), transforms.ToTensor()]), batch_size=self.batch_size,
-                                                 shuffle=True)
-        self.z_dim = 62
-
         # fixed noise
+        self.sample_z_ = torch.rand((self.batch_size, self.z_dim))
         if self.gpu_mode:
-            self.sample_z_ = Variable(torch.rand((self.batch_size, self.z_dim)).cuda(), volatile=True)
-        else:
-            self.sample_z_ = Variable(torch.rand((self.batch_size, self.z_dim)), volatile=True)
+            self.sample_z_ = self.sample_z_.cuda()
 
     def train(self):
         self.train_hist = {}
@@ -154,11 +119,14 @@ class BEGAN(object):
         self.train_hist['G_loss'] = []
         self.train_hist['per_epoch_time'] = []
         self.train_hist['total_time'] = []
+        self.M = {}
+        self.M['pre'] = []
+        self.M['pre'].append(1)
+        self.M['cur'] = []
 
+        self.y_real_, self.y_fake_ = torch.ones(self.batch_size, 1), torch.zeros(self.batch_size, 1)
         if self.gpu_mode:
-            self.y_real_, self.y_fake_ = Variable(torch.ones(self.batch_size, 1).cuda()), Variable(torch.zeros(self.batch_size, 1).cuda())
-        else:
-            self.y_real_, self.y_fake_ = Variable(torch.ones(self.batch_size, 1)), Variable(torch.zeros(self.batch_size, 1))
+            self.y_real_, self.y_fake_ = self.y_real_.cuda(), self.y_fake_.cuda()
 
         self.D.train()
         print('training start!!')
@@ -173,22 +141,20 @@ class BEGAN(object):
                 z_ = torch.rand((self.batch_size, self.z_dim))
 
                 if self.gpu_mode:
-                    x_, z_ = Variable(x_.cuda()), Variable(z_.cuda())
-                else:
-                    x_, z_ = Variable(x_), Variable(z_)
+                    x_, z_ = x_.cuda(), z_.cuda()
 
                 # update D network
                 self.D_optimizer.zero_grad()
 
                 D_real = self.D(x_)
-                D_real_err = torch.mean(torch.abs(D_real - x_))
+                D_real_loss = torch.mean(torch.abs(D_real - x_))
 
                 G_ = self.G(z_)
                 D_fake = self.D(G_)
-                D_fake_err = torch.mean(torch.abs(D_fake - G_))
+                D_fake_loss = torch.mean(torch.abs(D_fake - G_))
 
-                D_loss = D_real_err - self.k * D_fake_err
-                self.train_hist['D_loss'].append(D_loss.data[0])
+                D_loss = D_real_loss - self.k * D_fake_loss
+                self.train_hist['D_loss'].append(D_loss.item())
 
                 D_loss.backward()
                 self.D_optimizer.step()
@@ -198,31 +164,51 @@ class BEGAN(object):
 
                 G_ = self.G(z_)
                 D_fake = self.D(G_)
-                D_fake_err = torch.mean(torch.abs(D_fake - G_))
+                D_fake_loss = torch.mean(torch.abs(D_fake - G_))
 
-                G_loss = D_fake_err
-                self.train_hist['G_loss'].append(G_loss.data[0])
+                G_loss = D_fake_loss
+                self.train_hist['G_loss'].append(G_loss.item())
 
                 G_loss.backward()
                 self.G_optimizer.step()
 
                 # convergence metric
-                temp_M = D_real_err + torch.abs(self.gamma * D_real_err - D_fake_err)
+                temp_M = D_real_loss + torch.abs(self.gamma * D_real_loss - G_loss)
 
                 # operation for updating k
-                temp_k = self.k + self.lambda_ * (self.gamma * D_real_err - D_fake_err)
-                temp_k = temp_k.data[0]
+                temp_k = self.k + self.lambda_ * (self.gamma * D_real_loss - G_loss)
+                temp_k = temp_k.item()
 
-                # self.k = temp_k.data[0]
                 self.k = min(max(temp_k, 0), 1)
-                self.M = temp_M.data[0]
+                self.M['cur'] = temp_M.item()
 
                 if ((iter + 1) % 100) == 0:
                     print("Epoch: [%2d] [%4d/%4d] D_loss: %.8f, G_loss: %.8f, M: %.8f, k: %.8f" %
-                          ((epoch + 1), (iter + 1), self.data_loader.dataset.__len__() // self.batch_size, D_loss.data[0], G_loss.data[0], self.M, self.k))
+                          ((epoch + 1), (iter + 1), self.data_loader.dataset.__len__() // self.batch_size, D_loss.item(), G_loss.item(), self.M['cur'], self.k))
+
+
+            # if epoch == 0:
+            #     self.M['pre'] = self.M['cur']
+            #     self.M['cur'] = []
+            # else:
+            if np.mean(self.M['pre']) < np.mean(self.M['cur']):
+                pre_lr = self.G_optimizer.param_groups[0]['lr']
+                self.G_optimizer.param_groups[0]['lr'] = max(self.G_optimizer.param_groups[0]['lr'] / 2.0,
+                                                             self.lr_lower_boundary)
+                self.D_optimizer.param_groups[0]['lr'] = max(self.D_optimizer.param_groups[0]['lr'] / 2.0,
+                                                             self.lr_lower_boundary)
+                print('M_pre: ' + str(np.mean(self.M['pre'])) + ', M_cur: ' + str(
+                    np.mean(self.M['cur'])) + ', lr: ' + str(pre_lr) + ' --> ' + str(
+                    self.G_optimizer.param_groups[0]['lr']))
+            else:
+                print('M_pre: ' + str(np.mean(self.M['pre'])) + ', M_cur: ' + str(np.mean(self.M['cur'])))
+                self.M['pre'] = self.M['cur']
+
+                self.M['cur'] = []
 
             self.train_hist['per_epoch_time'].append(time.time() - epoch_start_time)
-            self.visualize_results((epoch+1))
+            with torch.no_grad():
+                self.visualize_results((epoch+1))
 
         self.train_hist['total_time'].append(time.time() - start_time)
         print("Avg one epoch time: %.2f, total %d epochs time: %.2f" % (np.mean(self.train_hist['per_epoch_time']),
@@ -248,10 +234,9 @@ class BEGAN(object):
             samples = self.G(self.sample_z_)
         else:
             """ random noise """
+            sample_z_ = torch.rand((self.batch_size, self.z_dim))
             if self.gpu_mode:
-                sample_z_ = Variable(torch.rand((self.batch_size, self.z_dim)).cuda(), volatile=True)
-            else:
-                sample_z_ = Variable(torch.rand((self.batch_size, self.z_dim)), volatile=True)
+                sample_z_ = sample_z_.cuda()
 
             samples = self.G(sample_z_)
 
@@ -260,6 +245,7 @@ class BEGAN(object):
         else:
             samples = samples.data.numpy().transpose(0, 2, 3, 1)
 
+        samples = (samples + 1) / 2
         utils.save_images(samples[:image_frame_dim * image_frame_dim, :, :, :], [image_frame_dim, image_frame_dim],
                           self.result_dir + '/' + self.dataset + '/' + self.model_name + '/' + self.model_name + '_epoch%03d' % epoch + '.png')
 
