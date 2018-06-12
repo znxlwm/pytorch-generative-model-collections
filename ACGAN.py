@@ -161,9 +161,8 @@ class ACGAN(object):
                     break
                 z_ = torch.rand((self.batch_size, self.z_dim))
                 y_vec_ = torch.zeros((self.batch_size, self.class_num)).scatter_(1, y_.type(torch.LongTensor).unsqueeze(1), 1)
-                y_fill_ = y_vec_.unsqueeze(2).unsqueeze(3).expand(self.batch_size, self.class_num, self.input_size, self.input_size)
                 if self.gpu_mode:
-                    x_, z_, y_vec_, y_fill_ = x_.cuda(), z_.cuda(), y_vec_.cuda(), y_fill_.cuda()
+                    x_, z_, y_vec_ = x_.cuda(), z_.cuda(), y_vec_.cuda()
 
                 # update D network
                 self.D_optimizer.zero_grad()
