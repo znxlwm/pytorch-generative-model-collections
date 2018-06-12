@@ -10,12 +10,14 @@ I tried to implement this repository as much as possible with [tensorflow-genera
 This repository is included code for CPU mode Pytorch, but i did not test. I tested only in GPU mode Pytorch.
 
 ## Dataset
+
 - MNIST
 - Fashion-MNIST
 - CIFAR10
 - SVHN
 - STL10
 - LSUN-bed
+#### I only tested the code on MNIST and Fashion-MNIST.
 
 ## Generative Adversarial Networks (GANs)
 ### Lists (Table is borrowed from [tensorflow-generative-model-collections](https://github.com/hwalsuklee/tensorflow-generative-model-collections))
@@ -156,6 +158,7 @@ The following shows basic folder structure.
 │
 ├── GAN.py # vainilla GAN
 ├── utils.py # utils
+├── dataloader.py # dataloader
 ├── models # model files to be saved here
 └── results # generation results to be saved here
 ```
