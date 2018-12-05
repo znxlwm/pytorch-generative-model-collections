@@ -141,7 +141,9 @@ class WGAN(object):
                 D_real = self.D(x_)
                 D_real_loss = -torch.mean(D_real)
 
-                G_ = self.G(z_)
+                with torch.no_grad():
+                    G_ = self.G(z_)
+
                 D_fake = self.D(G_)
                 D_fake_loss = torch.mean(D_fake)
 
