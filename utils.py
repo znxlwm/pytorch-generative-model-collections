@@ -78,7 +78,7 @@ def save_images(images, size, image_path):
 
 def imsave(images, size, path):
     image = np.squeeze(merge(images, size))
-    return scipy.misc.imsave(path, image)
+    return imageio.imwrite(path, image)
 
 def merge(images, size):
     h, w = images.shape[1], images.shape[2]
